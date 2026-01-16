@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mastering the Automotive Ignition Coil</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary: #1e293b;
+            --secondary: #3b82f6;
+            --accent: #ef4444;
+            --success: #22c55e;
+        }
+
+        body {
+            background-color: #f8fafc;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            color: var(--primary);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+        }
+
+        .gradient-header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+
+        .nav-link {
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-link:hover {
+            border-bottom: 2px solid var(--secondary);
+            color: var(--secondary);
+        }
+
+        .quiz-container {
+            display: none;
+        }
+
+        .quiz-container.active {
+            display: block;
+        }
+
+        .waveform-path {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: dash 3s linear forwards infinite;
+        }
+
+        @keyframes dash {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+    </style>
+</head>
+<body class="pb-20">
+
+    <!-- Header Section -->
+    <header class="gradient-header text-white py-12 px-6 shadow-xl mb-12">
+        <div class="max-w-5xl mx-auto">
+            <div class="flex items-center gap-4 mb-4">
+                <span class="bg-blue-500 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest">Tech Level II</span>
+                <span class="text-slate-400">Course: AUT-202 Electrical Systems</span>
+            </div>
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-4">The Ignition Coil: Operation & Testing</h1>
+            <p class="text-xl text-slate-300 max-w-2xl leading-relaxed">
+                An expert deep-dive into induction theory, voltage step-up mechanics, and diagnostic waveform analysis.
+            </p>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-6">
+        
+        <!-- Navigation Menu -->
+        <nav class="flex flex-wrap gap-6 mb-12 border-b border-slate-200 pb-4 sticky top-0 bg-[#f8fafc] z-50">
+            <a href="#lesson-plan" class="nav-link font-semibold py-2">Lesson Plan</a>
+            <a href="#theory" class="nav-link font-semibold py-2">Theory</a>
+            <a href="#technical" class="nav-link font-semibold py-2">Technical Data</a>
+            <a href="#testing" class="nav-link font-semibold py-2">Testing</a>
+            <a href="#quiz" class="nav-link font-semibold py-2 text-blue-600">Self-Assessment</a>
+        </nav>
+
+        <!-- Instructional Design / Lesson Plan -->
+        <section id="lesson-plan" class="mb-16 scroll-mt-24">
+            <div class="glass-card rounded-2xl p-8 border-l-8 border-blue-500">
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" /></svg>
+                    Full Lesson Plan (Gagne's Nine Events)
+                </h2>
+                <div class="grid md:grid-cols-2 gap-8 text-sm">
+                    <div>
+                        <ul class="space-y-4">
+                            <li><strong>1. Gaining Attention:</strong> Start with a "no-start" case study involving a car with fuel and air but no spark.</li>
+                            <li><strong>2. Informing Objectives:</strong> Students will diagnose a faulty coil using a DMM and an Oscilloscope.</li>
+                            <li><strong>3. Stimulating Recall:</strong> Review magnetism, Ohm’s Law, and basic relay operation.</li>
+                            <li><strong>4. Presenting Material:</strong> Multimedia lecture on Mutual Induction.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul class="space-y-4">
+                            <li><strong>5. Providing Guidance:</strong> Hands-on demo of checking primary vs secondary resistance.</li>
+                            <li><strong>6. Eliciting Performance:</strong> Students perform tests on shop vehicles.</li>
+                            <li><strong>7. Providing Feedback:</strong> Compare student findings to OEM specifications.</li>
+                            <li><strong>8. Assessing Performance:</strong> Final practical exam and the quiz below.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Theory Section -->
+        <section id="theory" class="mb-16 scroll-mt-24">
+            <h2 class="text-3xl font-bold mb-8">1. Theory of Operation</h2>
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h3 class="text-xl font-bold text-blue-600 mb-4">Mutual Induction</h3>
+                    <p class="mb-4 leading-relaxed">
+                        The ignition coil is an <strong>Autotransformer</strong>. It uses a small current in a primary circuit to create a massive magnetic field. When that circuit is broken, the field collapses across thousands of secondary windings.
+                    </p>
+                    <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400 italic">
+                        "The rate of collapse determines the voltage. The faster the field drops, the higher the spike."
+                    </div>
+                </div>
+                <div class="bg-slate-900 rounded-xl p-6 text-white shadow-2xl">
+                    <h4 class="text-xs uppercase text-slate-400 mb-4">Internal Induction Logic</h4>
+                    <div class="flex flex-col gap-4">
+                        <div class="flex justify-between items-center border-b border-slate-700 pb-2">
+                            <span>Primary (Input)</span>
+                            <span class="text-blue-400">12V-14V</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-slate-700 pb-2">
+                            <span>Turns Ratio</span>
+                            <span class="text-blue-400">1:100</span>
+                        </div>
+                        <div class="flex justify-between items-center text-xl font-bold pt-2">
+                            <span>Secondary (Output)</span>
+                            <span class="text-emerald-400">40,000V+</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Waveform Analysis -->
+        <section id="technical" class="mb-16 scroll-mt-24">
+            <h2 class="text-3xl font-bold mb-8">2. Waveform Interpretation</h2>
+            <div class="glass-card rounded-2xl overflow-hidden">
+                <div class="p-8">
+                    <p class="mb-6">Click the buttons to see different coil conditions on the "virtual scope":</p>
+                    <div class="flex gap-4 mb-8">
+                        <button onclick="updateScope('good')" class="bg-emerald-500 text-white px-4 py-2 rounded-lg font-bold hover:bg-emerald-600 transition">Good Coil</button>
+                        <button onclick="updateScope('short')" class="bg-red-500 text-white px-4 py-2 rounded-lg font-bold hover:bg-red-600 transition">Shorted (No Oscillations)</button>
+                        <button onclick="updateScope('lean')" class="bg-orange-500 text-white px-4 py-2 rounded-lg font-bold hover:bg-orange-600 transition">Lean Spike</button>
+                    </div>
+                    
+                    <div class="bg-black aspect-video rounded-xl relative p-4 flex items-center justify-center border-4 border-slate-800">
+                        <svg id="scope-svg" viewBox="0 0 400 200" class="w-full h-full">
+                            <!-- Grid -->
+                            <path d="M0 100 H400 M200 0 V200" stroke="#1e293b" stroke-width="1" />
+                            <path d="M0 50 H400 M0 150 H400 M50 0 V200 M100 0 V200 M150 0 V200 M250 0 V200 M300 0 V200 M350 0 V200" stroke="#0f172a" stroke-width="0.5" />
+                            
+                            <!-- Trace -->
+                            <path id="waveform" d="M20 180 L100 180 L100 20 L120 140 L250 140 L260 120 L270 160 L280 130 L290 150 L380 150" fill="none" stroke="#22c55e" stroke-width="3" class="waveform-path" />
+                        </svg>
+                        <div id="scope-label" class="absolute top-4 right-4 text-emerald-500 font-mono text-sm">CONDITION: HEALTHY</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quiz Section -->
+        <section id="quiz" class="mb-16 scroll-mt-24">
+            <div class="bg-white rounded-2xl shadow-xl p-8 border border-slate-200">
+                <h2 class="text-3xl font-bold mb-2">3. Knowledge Check</h2>
+                <p class="text-slate-500 mb-8">Complete this assessment to unlock your digital completion certificate.</p>
+                
+                <div id="quiz-wrapper">
+                    <div class="quiz-container active" id="q1">
+                        <h4 class="text-lg font-bold mb-4">Question 1: What electrical principle does an ignition coil rely on to increase voltage?</h4>
+                        <div class="space-y-3">
+                            <button onclick="checkAnswer(1, false)" class="w-full text-left p-4 rounded-xl border border-slate-200 hover:bg-slate-50 transition">Capacitive Discharge</button>
+                            <button onclick="checkAnswer(1, true)" class="w-full text-left p-4 rounded-xl border border-slate-200 hover:bg-slate-50 transition">Mutual Induction</button>
+                            <button onclick="checkAnswer(1, false)" class="w-full text-left p-4 rounded-xl border border-slate-200 hover:bg-slate-50 transition">Piezoelectric Effect</button>
+                        </div>
+                    </div>
+
+                    <div class="quiz-container" id="q2">
+                        <h4 class="text-lg font-bold mb-4">Question 2: If a coil has a 1:100 turns ratio and the primary pulse is 300V, what is the theoretical output?</h4>
+                        <div class="space-y-3">
+                            <button onclick="checkAnswer(2, false)" class="w-full text-left p-4 rounded-xl border border-slate-200 hover:bg-slate-50 transition">3,000 Volts</button>
+                            <button onclick="checkAnswer(2, true)" class="w-full text-left p-4 rounded-xl border border-slate-200 hover:bg-slate-50 transition">30,000 Volts</button>
+                            <button onclick="checkAnswer(2, false)" class="w-full text-left p-4 rounded-xl border border-slate-200 hover:bg-slate-50 transition">300,000 Volts</button>
+                        </div>
+                    </div>
+
+                    <div id="quiz-result" class="hidden text-center py-8">
+                        <div class="text-5xl mb-4">🎓</div>
+                        <h3 class="text-2xl font-bold text-emerald-600">Perfect Score!</h3>
+                        <p class="text-slate-600">You have demonstrated expert-level understanding of coil operation.</p>
+                        <button onclick="resetQuiz()" class="mt-6 text-blue-600 underline">Retake Quiz</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center text-slate-400 text-sm py-12">
+        <p>&copy; 2024 Automotive Instructional Systems | Prepared by Gemini Instructor</p>
+    </footer>
+
+    <script>
+        // Virtual Scope Logic
+        const waveform = document.getElementById('waveform');
+        const scopeLabel = document.getElementById('scope-label');
+
+        const paths = {
+            good: "M20 180 L100 180 L100 20 L120 140 L250 140 L260 120 L270 160 L280 130 L290 150 L380 150",
+            short: "M20 180 L100 180 L100 60 L120 140 L250 140 L380 140",
+            lean: "M20 180 L100 180 L100 5 L120 140 L180 140 L260 120 L270 160 L280 130 L290 150 L380 150"
+        };
+
+        function updateScope(type) {
+            waveform.setAttribute('d', paths[type]);
+            
+            // Trigger animation restart
+            waveform.style.animation = 'none';
+            waveform.offsetHeight; // trigger reflow
+            waveform.style.animation = null;
+
+            if (type === 'good') {
+                scopeLabel.innerText = 'CONDITION: HEALTHY';
+                scopeLabel.className = 'absolute top-4 right-4 text-emerald-500 font-mono text-sm';
+                waveform.setAttribute('stroke', '#22c55e');
+            } else if (type === 'short') {
+                scopeLabel.innerText = 'CONDITION: SHORTED (INTERNAL)';
+                scopeLabel.className = 'absolute top-4 right-4 text-red-500 font-mono text-sm';
+                waveform.setAttribute('stroke', '#ef4444');
+            } else {
+                scopeLabel.innerText = 'CONDITION: LEAN MISFIRE SPIKE';
+                scopeLabel.className = 'absolute top-4 right-4 text-orange-500 font-mono text-sm';
+                waveform.setAttribute('stroke', '#f97316');
+            }
+        }
+
+        // Quiz Logic
+        let currentStep = 1;
+        function checkAnswer(step, isCorrect) {
+            if (isCorrect) {
+                document.getElementById(`q${step}`).classList.remove('active');
+                const next = document.getElementById(`q${step + 1}`);
+                if (next) {
+                    next.classList.add('active');
+                    currentStep++;
+                } else {
+                    document.getElementById('quiz-result').classList.remove('hidden');
+                }
+            } else {
+                alert("Incorrect. Review the theory section and try again!");
+            }
+        }
+
+        function resetQuiz() {
+            document.getElementById('quiz-result').classList.add('hidden');
+            document.getElementById('q1').classList.add('active');
+            currentStep = 1;
+        }
+    </script>
+</body>
+</html>
